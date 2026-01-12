@@ -1,5 +1,7 @@
 .idea/
 .vs/
+.vscode/
+.github/
 
 .DS_Store
 *.class
