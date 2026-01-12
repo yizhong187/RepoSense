@@ -47,6 +47,7 @@ public class CliArguments {
 
     private Path reportDirectoryPath;
 
+    private Path assetsFolderPath;
     private Path configFolderPath;
     private Path repoConfigFilePath;
     private Path authorConfigFilePath;
@@ -132,6 +133,11 @@ public class CliArguments {
 
     public Path getReportDirectoryPath() {
         return reportDirectoryPath;
+    }
+
+
+    public Path getAssetsFolderPath() {
+        return assetsFolderPath;
     }
 
     public Path getConfigFolderPath() {
@@ -243,6 +249,7 @@ public class CliArguments {
                 && Objects.equals(this.locations, otherCliArguments.locations)
                 && this.isViewModeOnly == otherCliArguments.isViewModeOnly
                 && Objects.equals(this.reportDirectoryPath, otherCliArguments.reportDirectoryPath)
+                && Objects.equals(this.assetsFolderPath, otherCliArguments.assetsFolderPath)
                 && Objects.equals(this.repoConfigFilePath, otherCliArguments.repoConfigFilePath)
                 && Objects.equals(this.authorConfigFilePath, otherCliArguments.authorConfigFilePath)
                 && Objects.equals(this.groupConfigFilePath, otherCliArguments.groupConfigFilePath)
@@ -475,6 +482,16 @@ public class CliArguments {
                     GroupConfigCsvParser.GROUP_CONFIG_FILENAME);
             this.cliArguments.reportConfigFilePath = configFolderPath.resolve(
                     ReportConfigYamlParser.REPORT_CONFIG_FILENAME);
+            return this;
+        }
+
+        /**
+         * Adds the {@code assetsFolderPath} to CliArguments.
+         *
+         * @param assetsFolderPath The assets folder path.
+         */
+        public Builder assetsFolderPath(Path assetsFolderPath) {
+            this.cliArguments.assetsFolderPath = assetsFolderPath;
             return this;
         }
 

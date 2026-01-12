@@ -35,6 +35,7 @@ import reposense.parser.exceptions.InvalidMarkdownException;
 import reposense.parser.exceptions.ParseException;
 import reposense.parser.types.AlphanumericArgumentType;
 import reposense.parser.types.AnalysisThreadsArgumentType;
+import reposense.parser.types.AssetsFolderArgumentType;
 import reposense.parser.types.CloningThreadsArgumentType;
 import reposense.parser.types.ConfigFolderArgumentType;
 import reposense.parser.types.OutputFolderArgumentType;
@@ -78,6 +79,7 @@ public class ArgsParser {
     public static final String[] ANALYZE_AUTHORSHIP_FLAGS = new String[] {"--analyze-authorship", "-A"};
     public static final String[] ORIGINALITY_THRESHOLD_FLAGS = new String[] {"--originality-threshold", "-ot"};
     public static final String[] PORTFOLIO_FLAG = new String[] {"--portfolio", "-P"};
+    public static final String[] ASSETS_FLAGS = new String[] {"--assets", "-a"};
     public static final String[] REFRESH_ONLY_TEXT_FLAG = new String[] {"--text", "-T"};
 
     private static final Logger logger = LogsManager.getLogger(ArgsParser.class);
@@ -231,6 +233,14 @@ public class ArgsParser {
                 .action(Arguments.storeTrue())
                 .help("Refreshes only the text content of the report, without analyzing the repositories again.");
 
+        parser.addArgument(ASSETS_FLAGS)
+                .dest(ASSETS_FLAGS[0])
+                .metavar("PATH")
+                .type(new AssetsFolderArgumentType())
+                .setDefault(DEFAULT_ASSETS_PATH)
+                .help("The directory containing the assets files (favicon.ico, title.md only). "
+                        + "If not provided, the assets files will be obtained from the assets folder.");
+
         // Mutex flags - these will always be the last parameters in help message.
         mutexParser.addArgument(CONFIG_FLAGS)
                 .dest(CONFIG_FLAGS[0])
@@ -299,6 +309,7 @@ public class ArgsParser {
         }
 
         Path configFolderPath = results.get(CONFIG_FLAGS[0]);
+        Path assetsFolderPath = results.get(ASSETS_FLAGS[0]);
         Path reportFolderPath = results.get(VIEW_FLAGS[0]);
         Path outputFolderPath = results.get(OUTPUT_FLAGS[0]);
         ZoneId zoneId = results.get(TIMEZONE_FLAGS[0]);
@@ -319,6 +330,7 @@ public class ArgsParser {
 
         CliArguments.Builder cliArgumentsBuilder = new CliArguments.Builder()
                 .configFolderPath(configFolderPath)
+                .assetsFolderPath(assetsFolderPath)
                 .reportDirectoryPath(reportFolderPath)
                 .outputFilePath(outputFolderPath)
                 .zoneId(zoneId)
@@ -385,7 +397,7 @@ public class ArgsParser {
                 logger.warning(String.format(MESSAGE_INVALID_CONFIG_PATH, reportConfigFilePath));
             } catch (IOException ioe) {
                 // IOException thrown as report-config.yaml is not found or fields are invalid.
-                logger.log(Level.WARNING, "Error parsing report-config.yaml: " + ioe.getMessage() + "\n"
+                logger.log(Level.WARNING, () -> "Error parsing report-config.yaml: " + ioe.getMessage() + "\n"
                         + String.format(MESSAGE_INVALID_CONFIG_YAML, reportConfigFilePath));
             }
         }
