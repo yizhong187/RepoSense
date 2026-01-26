@@ -45,6 +45,24 @@ If the code is attributed to a different author by the user via `@@author` tag, 
 partial credit.
 </box>
 
+<!-- ------------------------------------------------------------------------------------------------------ -->
+
+### `--assets`, `-a`
+
+<div id="section-assets">
+
+**`--assets ASSETS_DIRECTORY`**: Specifies where to place assets for report generation.
+
+- Parameter: `ASSETS_DIRECTORY` The directory containing the assets files. A `favicon.ico` file can be placed here to customize the favicon of the dashboard, while a `title.md` file can be placed to customize the [title](https://reposense.org/ug/customizingReports.html#add-a-title) of the report using [Markdown syntax](https://www.markdownguide.org/basic-syntax/).
+- Alias: `-a`
+- Example: `--assets ./assets` or `-a ./assets`
+
+<box type="info" seamless>
+
+- If `--assets` is not specified, RepoSense looks for assets in the `./assets` directory.
+</box>
+</div>
+
 <!-- --------------------------◘---------------------------------------------------------------------------- -->
 
 ### `--config`, `-c`
