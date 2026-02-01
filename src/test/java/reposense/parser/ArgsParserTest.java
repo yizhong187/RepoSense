@@ -801,6 +801,25 @@ public class ArgsParserTest {
     }
 
     @Test
+    public void parse_withAuthorDedupMode_success() throws Exception {
+        String input = new InputBuilder()
+                .addRepos(TEST_REPO_REPOSENSE, TEST_REPO_BETA)
+                .add("--author-dedup-mode")
+                .build();
+        CliArguments cliArguments = ArgsParser.parse(translateCommandline(input));
+
+        Assertions.assertTrue(cliArguments.isAuthorDedupMode());
+    }
+
+    @Test
+    public void parse_withoutAuthorDedupMode_success() throws Exception {
+        String input = new InputBuilder().addRepos(TEST_REPO_REPOSENSE, TEST_REPO_BETA).build();
+        CliArguments cliArguments = ArgsParser.parse(translateCommandline(input));
+
+        Assertions.assertFalse(cliArguments.isAuthorDedupMode());
+    }
+
+    @Test
     public void parse_withRefreshTextOnly_success() throws Exception {
         String input = new InputBuilder().addOnlyTextRefreshed().build();
         CliArguments cliArguments = ArgsParser.parse(translateCommandline(input));
