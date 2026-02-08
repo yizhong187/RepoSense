@@ -2,6 +2,7 @@ package reposense.parser;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -100,6 +101,10 @@ public class ArgsParser {
             "\"Since Date\" cannot be later than \"Until Date\".";
     private static final String MESSAGE_SINCE_DATE_LATER_THAN_TODAY_DATE =
             "\"Since Date\" must not be later than today's date.";
+    private static final String MESSAGE_AUTHOR_DEDUP_MODE_WITHOUT_CONFIG =
+            "--author-dedup-mode flag is used without --config flag. The flag will be ignored.";
+    private static final String MESSAGE_AUTHOR_CONFIG_FILE_NOT_FOUND =
+            "--author-dedup-mode flag is used but author-config.csv file not found at %s. The flag will be ignored.";
     private static final Path EMPTY_PATH = Paths.get("");
     private static final Path DEFAULT_CONFIG_PATH = Paths.get(System.getProperty("user.dir")
             + File.separator + "config" + File.separator);
@@ -368,6 +373,20 @@ public class ArgsParser {
             logger.info(String.format("Ignoring argument '%s' for --view.", reportFolderPath.toString()));
         }
         cliArgumentsBuilder.isAutomaticallyLaunching(isAutomaticallyLaunching);
+
+        // Validate author-dedup-mode flag
+        if (isAuthorDedupMode) {
+            // Check if --config flag was explicitly provided
+            if (configFolderPath.equals(DEFAULT_CONFIG_PATH)) {
+                logger.warning(MESSAGE_AUTHOR_DEDUP_MODE_WITHOUT_CONFIG);
+            } else {
+                // Check if author-config.csv exists
+                Path authorConfigPath = configFolderPath.resolve(AuthorConfigCsvParser.AUTHOR_CONFIG_FILENAME);
+                if (!Files.exists(authorConfigPath)) {
+                    logger.warning(String.format(MESSAGE_AUTHOR_CONFIG_FILE_NOT_FOUND, authorConfigPath));
+                }
+            }
+        }
 
         return cliArgumentsBuilder.build();
     }

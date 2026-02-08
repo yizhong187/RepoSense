@@ -1,8 +1,5 @@
 package reposense.parser;
 
-import static org.apache.tools.ant.types.Commandline.translateCommandline;
-import static reposense.util.TestUtil.loadResource;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.apache.tools.ant.types.Commandline.translateCommandline;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,6 +29,7 @@ import reposense.parser.types.SinceDateArgumentType;
 import reposense.util.FileUtil;
 import reposense.util.InputBuilder;
 import reposense.util.TestUtil;
+import static reposense.util.TestUtil.loadResource;
 import reposense.util.TimeUtil;
 
 public class ArgsParserTest {
@@ -833,6 +832,29 @@ public class ArgsParserTest {
         CliArguments cliArguments = ArgsParser.parse(translateCommandline(input));
 
         Assertions.assertFalse(cliArguments.isOnlyTextRefreshed());
+    }
+
+    @Test
+    public void parse_withAuthorDedupModeAndConfig_success() throws Exception {
+        String input = new InputBuilder()
+                .addConfig(CONFIG_FOLDER_ABSOLUTE)
+                .add("--author-dedup-mode")
+                .build();
+        CliArguments cliArguments = ArgsParser.parse(translateCommandline(input));
+
+        Assertions.assertTrue(cliArguments.isAuthorDedupMode());
+    }
+
+    @Test
+    public void parse_withAuthorDedupModeWithoutConfig_success() throws Exception {
+        String input = new InputBuilder()
+                .addRepos(TEST_REPO_REPOSENSE, TEST_REPO_BETA)
+                .add("--author-dedup-mode")
+                .build();
+        CliArguments cliArguments = ArgsParser.parse(translateCommandline(input));
+
+        // Flag should still be set as true, but a warning should be logged
+        Assertions.assertTrue(cliArguments.isAuthorDedupMode());
     }
 
     /**
