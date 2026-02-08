@@ -515,8 +515,9 @@ public class ReportGenerator {
 
             // Add all commit authors to the config, but skip those that match configured aliases
             for (Author commitAuthor : authorList) {
+                String gitId = commitAuthor.getGitId();
                 Author configuredAuthor = config.getAuthorConfig()
-                        .getAuthor(commitAuthor.getGitId(), commitAuthor.getGitId());
+                        .getAuthor(gitId, gitId);
 
                 if (configuredAuthor == Author.UNKNOWN_AUTHOR) {
                     // Not in configured authors/aliases, add as new author
