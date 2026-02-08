@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.apache.tools.ant.types.Commandline.translateCommandline;
+import static reposense.util.TestUtil.loadResource;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +31,6 @@ import reposense.parser.types.SinceDateArgumentType;
 import reposense.util.FileUtil;
 import reposense.util.InputBuilder;
 import reposense.util.TestUtil;
-import static reposense.util.TestUtil.loadResource;
 import reposense.util.TimeUtil;
 
 public class ArgsParserTest {
