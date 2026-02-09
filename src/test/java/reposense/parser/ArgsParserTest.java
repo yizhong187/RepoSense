@@ -1,5 +1,8 @@
 package reposense.parser;
 
+import static org.apache.tools.ant.types.Commandline.translateCommandline;
+import static reposense.util.TestUtil.loadResource;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,9 +14,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.apache.tools.ant.types.Commandline.translateCommandline;
-import static reposense.util.TestUtil.loadResource;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
