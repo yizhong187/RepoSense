@@ -65,5 +65,5 @@
     }
   ],
   "dependencyDashboard": true,
-  "baseBranches": ["master", "update-renovate-config"]
+  "baseBranchPatterns": ["master"]
 }
